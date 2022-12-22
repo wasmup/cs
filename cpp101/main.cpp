@@ -22,3 +22,8 @@ int main() {
   std::cout << spinWords("to").compare("to") << std::endl;             // 0
   std::cout << spinWords("CodeWars").compare("sraWedoC") << std::endl; // 0
 }
+
+/*
+Write a function that takes in a string of one or more words, and returns the
+same string, but with all five or more letter words reversed:
+ */
