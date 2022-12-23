@@ -35,7 +35,7 @@ func main() {
 	fmt.Println("sum =", sum)
 	////////////////////////////////////////////////////////////////////////////
 	var mu sync.Mutex
-	mu.Lock() // join
+	mu.Lock()
 	go func(t0 time.Time) {
 		defer mu.Unlock()
 		log.Println("long running job", time.Since(t0))
@@ -43,7 +43,7 @@ func main() {
 	}(time.Now())
 
 	t0 := time.Now()
-	mu.Lock()
+	mu.Lock() // join
 	fmt.Println("finished", time.Since(t0))
 }
 
