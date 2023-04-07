@@ -48,7 +48,7 @@ func run(output string, dirs ...string) error {
 	for _, p := range r {
 		fmt.Fprintln(f, p.Hash)
 		for _, path := range p.Files {
-			fmt.Fprintln(f, path)
+			fmt.Fprintf(f, "%q\n", path)
 		}
 		fmt.Fprintln(f) // Empty line between hash groups
 	}
@@ -70,7 +70,7 @@ func (f *FileScanner) visit(path string, info fs.DirEntry, err error) error {
 		return err
 	}
 
-	fmt.Println("scanning file:", path)
+	fmt.Printf("scanning file %q\n", path)
 
 	t0 := time.Now()
 	hash, err := ComputeHash(path)
