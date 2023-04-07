@@ -1,0 +1,10 @@
+[package]
+name = "rs104-hash-a-file-solid"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+ring = "0.17.0-alpha.11"                     # Safe, fast, small crypto using Rust.
+hex = "0.4.3"                        # Encoding and decoding data into/from hexadecimal representation.

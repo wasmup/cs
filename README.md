@@ -13,3 +13,8 @@ mkdir build          # Create a directory to hold the build output.
 cd build
 cmake ..  # Generate native build scripts.
 ```
+
+
+https://code.visualstudio.com/docs/editor/variables-reference
+
+
