@@ -32,6 +32,11 @@ func main() {
 }
 
 func run(output string, dirs ...string) error {
+	f, err := os.Create(output)
+	if err != nil {
+		return fmt.Errorf("failed to Create file:%w", err)
+	}
+
 	scanner := &FileScanner{}
 
 	r, err := scanner.Scan(dirs...)
@@ -40,11 +45,6 @@ func run(output string, dirs ...string) error {
 	}
 
 	fmt.Println("\nWriting output to file:", output)
-	f, err := os.Create(output)
-	if err != nil {
-		return fmt.Errorf("Create file failed:%w", err)
-	}
-
 	for _, p := range r {
 		fmt.Fprintln(f, p.Hash)
 		for _, path := range p.Files {

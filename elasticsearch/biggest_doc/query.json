@@ -1,0 +1,19 @@
+GET index/_search
+{
+    "size": 1,
+    "sort": [
+        {
+            "_script": {
+                "script": {
+                    "source": "def json = params._source.toString(); return json.length();",
+                    "lang": "painless"
+                },
+                "type": "number",
+                "order": "desc"
+            }
+        }
+    ],
+    "_source": [
+        "id"
+    ]
+}

@@ -1,3 +1,5 @@
 **/Cargo.lock
-**/bin
-**/obj
+**/main
+**/bin/
+**/obj/
+***/__pycache__/

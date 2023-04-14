@@ -7,47 +7,42 @@ import (
 	"time"
 )
 
-func async(i int, t0 time.Time, wg *sync.WaitGroup) {
-	defer wg.Done()
-	log.Println(i, time.Since(t0))
-}
-
 func main() {
 	var wg sync.WaitGroup
-
 	for i := 0; i < 10; i++ {
 		wg.Add(1)
-		go async(i, time.Now(), &wg)
+		go func(i int, t0 time.Time) {
+			log.Println("WaitGroup start:", i, time.Since(t0))
+			time.Sleep(1000 * time.Millisecond) // a job todo
+			log.Println("WaitGroup stop :", i, time.Since(t0))
+			wg.Done()
+		}(i, time.Now())
 	}
-
-	wg.Wait() // join
-	fmt.Println("done")
 	////////////////////////////////////////////////////////////////////////////
-	ch := make(chan int, 10)
-	for i := 0; i < cap(ch); i++ {
-		go fch(i, ch, time.Now())
+	ch := make(chan struct{}, 3)
+	for i := 0; i < 10; i++ {
+		go func(i int, t0 time.Time) {
+			ch <- struct{}{} // counting semaphore
+			log.Println("chan start:", i, time.Since(t0))
+			time.Sleep(100 * time.Millisecond) // a job todo
+			log.Println("chan stop :", i, time.Since(t0))
+			<-ch // free
+		}(i, time.Now())
 	}
-
-	sum := 0
-	for i := 0; i < cap(ch); i++ {
-		sum += <-ch // join
-	}
-	fmt.Println("sum =", sum)
 	////////////////////////////////////////////////////////////////////////////
 	var mu sync.Mutex
 	mu.Lock()
 	go func(t0 time.Time) {
-		defer mu.Unlock()
-		log.Println("long running job", time.Since(t0))
-		time.Sleep(1000 * time.Millisecond)
+		log.Println("Mutex start:", time.Since(t0))
+		time.Sleep(1000 * time.Millisecond) // a job todo
+		log.Println("Mutex stop :", time.Since(t0))
+		mu.Unlock()
 	}(time.Now())
 
 	t0 := time.Now()
 	mu.Lock() // join
-	fmt.Println("finished", time.Since(t0))
-}
+	fmt.Println("Mutex finished", time.Since(t0))
 
-func fch(i int, ch chan int, t0 time.Time) {
-	log.Println(i, time.Since(t0))
-	ch <- i
+	wg.Wait() // join
+	fmt.Println("WaitGroup finished")
 }
